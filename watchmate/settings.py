@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['61.28.238.6.nip.io']
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

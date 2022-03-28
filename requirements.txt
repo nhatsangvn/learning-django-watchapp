@@ -1,5 +1,6 @@
 asgiref==3.5.0
 Django==3.2.12
+monitoring-sample-service==1.0.0
 python-decouple==3.6
 pytz==2022.1
 sqlparse==0.4.2
