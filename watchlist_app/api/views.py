@@ -1,3 +1,4 @@
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from watchlist_app.models import Movie
@@ -26,7 +27,11 @@ def movie_list(request):
 def movie_detail(request, pk):
 
     if request.method == 'GET':
-        movie = Movie.objects.get(pk=pk)
+        try:
+            movie = Movie.objects.get(pk=pk)
+        except Movie.DoesNotExist:
+            content = {'please move along': 'no movie to see here'}
+            return Response(content, status=status.HTTP_404_NOT_FOUND)
         serializer = MovieSerializer(movie)
         return Response(serializer.data)
 
