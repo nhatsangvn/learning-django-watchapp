@@ -2,25 +2,22 @@ from rest_framework import serializers
 from watchlist_app.models import Movie
 import re
 
-def special_chars(value):
-    if not re.search('^[a-zA-Z0-9]*$', value):
-        raise serializers.ValidationError('Name contains special characters!')
+#def special_chars(value):
+#    if not re.search('^[a-zA-Z0-9]*$', value):
+#        raise serializers.ValidationError('Name contains special characters!')
 
-class MovieSerializer(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
-    name = serializers.CharField(validators=[special_chars])
-    description = serializers.CharField()
-    active = serializers.BooleanField()
+class MovieSerializer(serializers.ModelSerializer):
+    
+    len_name = serializers.SerializerMethodField()
 
-    def create(self, validated_data):
-        return Movie.objects.create(**validated_data)
+    class Meta:
+        model = Movie
+        fields = "__all__"
+        #fields = ['id', 'name', 'description']
+        #exclude = ['active']
 
-    def update(self, instance, validated_data):
-        instance.name = validated_data.get('name', instance.name)
-        instance.description = validated_data.get('description', instance.description)
-        instance.active = validated_data.get('active', instance.active)
-        instance.save()
-        return instance
+    def get_len_name(self, object):
+        return len(object.name)    
 
     def validate(self, obj):
         if obj['name'] == obj['description']:
